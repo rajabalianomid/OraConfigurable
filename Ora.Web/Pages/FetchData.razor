@@ -1,0 +1,129 @@
+﻿@page "/fetchdata"
+
+@using Ora.Web.Services
+@using Ora.Web.Models
+@inject ConfigService ConfigService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+<div>
+    <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Name</label>
+                <InputText @bind-Value="_model.Name" class="form-control" placeholder="Name"></InputText>
+            </div>
+            <div class="form-group col-md-6">
+                <label>Value</label>
+                <InputText @bind-Value="_model.Value" class="form-control" id="Value" placeholder="Value"></InputText>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label>Application Name</label>
+                <InputText @bind-Value="_model.ApplicationName" class="form-control" placeholder="Application Name"></InputText>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="inputState">Type</label>
+                <InputSelect class="form-control" @bind-Value="_model.Type">
+                    @foreach (var option in Enum.GetNames(typeof(ConfigModel.ConfigType)).Select((item, i) => new { item, i }))
+                    {
+                        if (option.i == 0)
+                        {
+                            <option value="@option.item" selected>@option.item</option>
+                        }
+                        else
+                        {
+                            <option value="@option.item">@option.item</option>
+                        }
+                    }
+                </InputSelect>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">@(_model.Id == 0 ? "Insert" : "Edit")</button>
+        <button @onclick="@(e => Clear())" class="btn btn-light">Clear</button>
+    </EditForm>
+</div>
+<p></p>
+<div>
+    <form class="form-inline">
+        <div class="form-group">
+            <input @bind-value="_filterModel.Name" placeholder="Name Filter" class="form-control mx-sm-3">
+            <input @bind-value="_filterModel.ApplicationName" placeholder="Application Name" class="form-control mx-sm-3">
+            <button type="button" @onclick="@(e => Filter())" class="btn btn-link">Search</button>
+        </div>
+    </form>
+</div>
+<p></p>
+<div class="form-row">
+    <GridView Items="configs">
+        <TableHeader>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+            <th>ApplicationName</th>
+            <th>
+            </th>
+            <th>
+            </th>
+        </TableHeader>
+        <RowTemplate>
+            <td>@context.Id</td>
+            <td>@context.Name</td>
+            <td>@context.Type</td>
+            <td>@context.Value</td>
+            <td>@context.ApplicationName</td>
+            <td><button @onclick="@(e => Disable(context))" type="button" class="btn btn-danger">Disable</button></td>
+            <td><button @onclick="@(e => Edit(context))" type="button" class="btn btn-info">Edit</button></td>
+        </RowTemplate>
+    </GridView>
+
+</div>
+@code {
+    private List<ConfigModel> configs;
+
+    protected override async Task OnInitializedAsync()
+    {
+        configs = await ConfigService.GetAllAsync("Ora");
+    }
+
+    private ConfigModel _model = new ConfigModel();
+    private FilterModel _filterModel = new FilterModel();
+
+    private async Task HandleValidSubmit()
+    {
+        if (_model.Id > 0)
+            await ConfigService.Edit(_model);
+        else
+            await ConfigService.Add(_model);
+        configs = await ConfigService.GetAllAsync("Ora");
+    }
+
+    private async Task Filter()
+    {
+        configs = await ConfigService.GetByNameAsync(_filterModel.ApplicationName, _filterModel.Name);
+        Clear();
+    }
+
+    private async Task Disable(ConfigModel configModel)
+    {
+        await ConfigService.Disable(configModel);
+        Clear();
+        configs = await ConfigService.GetAllAsync("Ora");
+    }
+
+    private void Edit(ConfigModel configModel)
+    {
+        _model = configModel;
+    }
+
+    private void Clear()
+    {
+        _model = new ConfigModel();
+    }
+}

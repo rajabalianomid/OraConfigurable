@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ora.Common", "Ora.Common\Ora.Common.csproj", "{0BB99BC5-E7B5-4469-833A-0E1616CDB3B3}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{F95773FA-D4A8-4742-BE6A-EB8989C3F3E8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0BB99BC5-E7B5-4469-833A-0E1616CDB3B3} = {0BB99BC5-E7B5-4469-833A-0E1616CDB3B3}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ora.API", "Ora.API\Ora.API.csproj", "{AB33BEFE-4285-4FE8-862F-B875749B2984}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ora.Services.Configurable", "Ora.Services.Configurable\Ora.Services.Configurable.csproj", "{27F248F7-9F43-48CB-8F01-F0EC168E6289}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ora.Common.Commands", "Ora.Common.Commands\Ora.Common.Commands.csproj", "{194B288F-81D8-4738-B4AE-0DF35EDADEA6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ora.Web", "Ora.Web\Ora.Web.csproj", "{CDD68675-7A13-47EB-B45D-65055E47F338}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0BB99BC5-E7B5-4469-833A-0E1616CDB3B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BB99BC5-E7B5-4469-833A-0E1616CDB3B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BB99BC5-E7B5-4469-833A-0E1616CDB3B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BB99BC5-E7B5-4469-833A-0E1616CDB3B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F95773FA-D4A8-4742-BE6A-EB8989C3F3E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F95773FA-D4A8-4742-BE6A-EB8989C3F3E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F95773FA-D4A8-4742-BE6A-EB8989C3F3E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F95773FA-D4A8-4742-BE6A-EB8989C3F3E8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB33BEFE-4285-4FE8-862F-B875749B2984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB33BEFE-4285-4FE8-862F-B875749B2984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB33BEFE-4285-4FE8-862F-B875749B2984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB33BEFE-4285-4FE8-862F-B875749B2984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27F248F7-9F43-48CB-8F01-F0EC168E6289}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27F248F7-9F43-48CB-8F01-F0EC168E6289}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27F248F7-9F43-48CB-8F01-F0EC168E6289}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27F248F7-9F43-48CB-8F01-F0EC168E6289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{194B288F-81D8-4738-B4AE-0DF35EDADEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{194B288F-81D8-4738-B4AE-0DF35EDADEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{194B288F-81D8-4738-B4AE-0DF35EDADEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{194B288F-81D8-4738-B4AE-0DF35EDADEA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDD68675-7A13-47EB-B45D-65055E47F338}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDD68675-7A13-47EB-B45D-65055E47F338}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDD68675-7A13-47EB-B45D-65055E47F338}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDD68675-7A13-47EB-B45D-65055E47F338}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {68C1BC9E-F705-4F01-9C60-CC272CBC0DB2}
+	EndGlobalSection
+EndGlobal

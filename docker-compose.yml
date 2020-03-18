@@ -1,0 +1,70 @@
+version: '3.4'
+
+services:
+  ora.web:
+    image: ${DOCKER_REGISTRY-}oraweb
+    ports:
+      - "5200:80"
+    build:
+      context: .
+      dockerfile: Ora.Web/Dockerfile
+    depends_on:
+      - ora.api
+      - ora.service.configurable
+    networks:
+      - local
+
+  ora.api:
+    image: ${DOCKER_REGISTRY-}oraapi
+    ports:
+      - "5100:80"
+    build:
+      context: .
+      dockerfile: Ora.API/Dockerfile
+    depends_on:
+      - ora.service.configurable
+      - rabbitmq
+    networks:
+      - local
+
+  ora.service.configurable:
+    image: ${DOCKER_REGISTRY-}oraservicesconfigurable
+    ports:
+      - "5101:80"
+    build:
+      context: .
+      dockerfile: Ora.Services.Configurable/Dockerfile
+    depends_on:
+      - rabbitmq
+      - mongo
+    networks:
+      - local
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:3-management
+    ports:
+        - "15672:15672"
+        - "5672:5672"
+    environment:
+        RABBITMQ_ERLANG_COOKIE: 6085e2412b6fa88647466c6a81c0cea0
+        RABBITMQ_DEFAULT_USER: guest
+        RABBITMQ_DEFAULT_PASS: guest
+        RABBITMQ_DEFAULT_VHOST: /
+    networks:
+      - local
+
+  mongo:
+    container_name: mongo
+    ports:
+        - "27017:27017"
+    image: mongo
+    volumes:
+      - ${WEBAPP_STORAGE_HOME}/site:/data/db
+      #- ./data:/data/db
+    networks:
+      - local
+
+networks:
+  local:
+    driver: bridge
