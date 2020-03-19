@@ -16,7 +16,7 @@ namespace Ora.Services.Configurable.Services
         Task InsertSetting(Setting setting, bool clearCache = true);
         Task UpdateSetting(Setting setting, bool clearCache = true);
         Task ResolveSetting();
-        Task DeleteSetting(Setting setting);
+        void DeleteSetting(Setting setting);
         Task<Setting> GetSettingById(int settingId);
         Task<Setting> GetSetting(string key, string applicationName = null, bool loadSharedValueIfNotFound = false);
         T GetSettingByKey<T>(string key, T defaultValue = default(T), string applicationName = null, bool loadSharedValueIfNotFound = false);
@@ -28,8 +28,8 @@ namespace Ora.Services.Configurable.Services
         Task SaveSetting<T>(T settings, string applicationName = null) where T : ISettings, new();
         Task SaveSetting<T, TPropType>(T settings, Expression<Func<T, TPropType>> keySelector, string applicationName = null, bool clearCache = true) where T : ISettings, new();
         Task SaveSettingOverridablePerStore<T, TPropType>(T settings, Expression<Func<T, TPropType>> keySelector, bool overrideForStore, string applicationName = null, bool clearCache = true) where T : ISettings, new();
-        Task DeleteSetting<T>() where T : ISettings, new();
-        Task DeleteSetting<T, TPropType>(T settings, Expression<Func<T, TPropType>> keySelector, string applicationName = null) where T : ISettings, new();
+        void DeleteSetting<T>() where T : ISettings, new();
+        void DeleteSetting<T, TPropType>(T settings, Expression<Func<T, TPropType>> keySelector, string applicationName = null) where T : ISettings, new();
         void ClearCache();
         string GetSettingKey<TSettings, T>(TSettings settings, Expression<Func<TSettings, T>> keySelector) where TSettings : ISettings, new();
     }

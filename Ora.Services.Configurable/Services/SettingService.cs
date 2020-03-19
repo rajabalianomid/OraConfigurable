@@ -191,12 +191,12 @@ namespace Ora.Services.Configurable.Services
         /// Deletes a setting
         /// </summary>
         /// <param name="setting">Setting</param>
-        public virtual async Task DeleteSetting(Setting setting)
+        public virtual void DeleteSetting(Setting setting)
         {
             if (setting == null)
                 throw new ArgumentNullException(nameof(setting));
 
-            await _settingRepository.Delete(setting);
+            _settingRepository.Delete(setting);
 
             //cache
             _cacheManager.RemoveByPrefix(setting.ApplicationName);
@@ -289,10 +289,10 @@ namespace Ora.Services.Configurable.Services
         /// Gets all settings
         /// </summary>
         /// <returns>Settings</returns>
-        public virtual IList<Setting> GetAllSettings(string applicationName = null, string name = null, bool cache = false)
+        public virtual IList<Setting> GetAllSettings(string applicationName, string name = null, bool cache = false)
         {
-            applicationName = applicationName?.Trim().ToLowerInvariant();
-            if (cache || !DbIsAvailable)
+            applicationName = applicationName.Trim().ToLowerInvariant();
+            if (applicationName != null && (cache || !DbIsAvailable))
             {
                 IEnumerable<SettingForCaching> settingForCachings = null;
                 var all = GetAllSettingsCached(applicationName);
@@ -464,24 +464,24 @@ namespace Ora.Services.Configurable.Services
             if (overrideForStore || applicationName == null)
                 await SaveSetting(settings, keySelector, applicationName, clearCache);
             else if (applicationName != null)
-                await DeleteSetting(settings, keySelector, applicationName);
+                DeleteSetting(settings, keySelector, applicationName);
         }
 
         /// <summary>
         /// Delete all settings
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
-        public virtual async Task DeleteSetting<T>() where T : ISettings, new()
+        public virtual void DeleteSetting<T>() where T : ISettings, new()
         {
             var settingsToDelete = new List<Setting>();
-            var allSettings = GetAllSettings();
+            var allSettings = GetAllSettings(null);
             foreach (var prop in typeof(T).GetProperties())
             {
                 var key = typeof(T).Name + "." + prop.Name;
                 settingsToDelete.AddRange(allSettings.Where(x => x.Name.Equals(key, StringComparison.InvariantCultureIgnoreCase)));
             }
 
-            await Task.Run(() => settingsToDelete.ForEach(async f => await DeleteSetting(f)));
+            settingsToDelete.ForEach(f => DeleteSetting(f));
         }
 
         /// <summary>
@@ -492,7 +492,7 @@ namespace Ora.Services.Configurable.Services
         /// <param name="settings">Settings</param>
         /// <param name="keySelector">Key selector</param>
         /// <param name="applicationName">Store ID</param>
-        public virtual async Task DeleteSetting<T, TPropType>(T settings, Expression<Func<T, TPropType>> keySelector, string applicationName = null) where T : ISettings, new()
+        public virtual void DeleteSetting<T, TPropType>(T settings, Expression<Func<T, TPropType>> keySelector, string applicationName = null) where T : ISettings, new()
         {
             var key = GetSettingKey(settings, keySelector);
             key = key.Trim().ToLowerInvariant();
@@ -504,8 +504,8 @@ namespace Ora.Services.Configurable.Services
                 return;
 
             //update
-            var setting = await GetSettingById(settingForCaching.Id);
-            await DeleteSetting(setting);
+            var setting = GetSettingById(settingForCaching.Id).Result;
+            DeleteSetting(setting);
         }
 
         /// <summary>
@@ -541,16 +541,23 @@ namespace Ora.Services.Configurable.Services
         {
             await Task.Run(() =>
             {
-                //if (_settingRepository.TableAll.Any())
-                //    _settingRepository.TableAll.GroupBy(g => new { g.ApplicationName, g.Name })
-                //    .Where(w => w.Count() > 2)
-                //    .Select(s => s)
-                //    .ToList().ForEach(async f =>
-                //    {
-                //        var delete = f.OrderBy(o => o.ChangeUTC).First();
-                //        await DeleteSetting(delete);
-                //    });
-                //_cacheManager.Clear();
+                if (_settingRepository.TableAll.Any())
+                {
+                    var result = _settingRepository.TableAll.GroupBy(g => new Setting { ApplicationName = g.ApplicationName, Name = g.Name })
+                    .Where(w => w.Count() > 2)
+                    .Select(s => s.Key)
+                    .ToList();
+                    foreach (var item in result)
+                    {
+                        var found = _settingRepository.TableAll.Where(w => w.Name == item.Name && w.ApplicationName == item.ApplicationName).ToList();
+                        var forremoves = found.OrderBy(o => o.ChangeUTC).Take(found.Count - 1);
+                        foreach (var remove in forremoves)
+                        {
+                            DeleteSetting(remove);
+                        }
+                    }
+                    _cacheManager.Clear();
+                }
             });
         }
 

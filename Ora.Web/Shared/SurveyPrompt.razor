@@ -1,16 +1,28 @@
 ﻿<div class="alert alert-secondary mt-4" role="alert">
-    <span class="oi oi-pencil mr-2" aria-hidden="true"></span>
-    <strong>@Title</strong>
+    <div>
+        <span class="oi oi-person mr-2" aria-hidden="true"></span>
+        <strong>@Title</strong>
+    </div>
+    <div class="text-nowrap">
+        <span class="oi oi-phone mr-2" aria-hidden="true"></span>
+        <strong>@Phone</strong>
+    </div>
+    <div class="text-nowrap">
+        <span class="oi oi-pencil mr-2" aria-hidden="true"></span>
+        <strong>
+            For more information:
+        </strong>
+        <a target="_blank" class="font-weight-bold" href="@Url">Linkedin</a>
+    </div>
 
-    <span class="text-nowrap">
-        Please take our
-        <a target="_blank" class="font-weight-bold" href="https://go.microsoft.com/fwlink/?linkid=2112271">brief survey</a>
-    </span>
-    and tell us what you think.
 </div>
 
 @code {
     // Demonstrates how a parent component can supply parameters
     [Parameter]
     public string Title { get; set; }
+    [Parameter]
+    public string Phone { get; set; }
+    [Parameter]
+    public string Url { get; set; }
 }

@@ -16,7 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ora.Services.Configurable",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ora.Common.Commands", "Ora.Common.Commands\Ora.Common.Commands.csproj", "{194B288F-81D8-4738-B4AE-0DF35EDADEA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ora.Web", "Ora.Web\Ora.Web.csproj", "{CDD68675-7A13-47EB-B45D-65055E47F338}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ora.Web", "Ora.Web\Ora.Web.csproj", "{CDD68675-7A13-47EB-B45D-65055E47F338}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ora.Common.Commands.Test", "Ora.Common.Commands.Test\Ora.Common.Commands.Test.csproj", "{15DD346D-3605-420C-9E59-81F98529C746}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +50,10 @@ Global
 		{CDD68675-7A13-47EB-B45D-65055E47F338}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CDD68675-7A13-47EB-B45D-65055E47F338}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CDD68675-7A13-47EB-B45D-65055E47F338}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15DD346D-3605-420C-9E59-81F98529C746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15DD346D-3605-420C-9E59-81F98529C746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15DD346D-3605-420C-9E59-81F98529C746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15DD346D-3605-420C-9E59-81F98529C746}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

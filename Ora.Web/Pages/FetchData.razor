@@ -89,7 +89,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        configs = await ConfigService.GetAllAsync("Ora");
+        configs = await ConfigService.GetAllAsync();
     }
 
     private ConfigModel _model = new ConfigModel();
@@ -101,7 +101,8 @@
             await ConfigService.Edit(_model);
         else
             await ConfigService.Add(_model);
-        configs = await ConfigService.GetAllAsync("Ora");
+        configs = await ConfigService.GetAllAsync();
+        Clear();
     }
 
     private async Task Filter()
@@ -114,7 +115,7 @@
     {
         await ConfigService.Disable(configModel);
         Clear();
-        configs = await ConfigService.GetAllAsync("Ora");
+        configs = await ConfigService.GetAllAsync();
     }
 
     private void Edit(ConfigModel configModel)

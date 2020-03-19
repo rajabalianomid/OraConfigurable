@@ -17,7 +17,7 @@ namespace Ora.Web.Services
         {
             _endpointSettings = endpointSettings;
         }
-        public async Task<List<ConfigModel>> GetAllAsync(string applicationName)
+        public async Task<List<ConfigModel>> GetAllAsync(string applicationName = "General")
         {
             var parameters = new Dictionary<string, string>();
             parameters.Add("ApplicationName", applicationName);

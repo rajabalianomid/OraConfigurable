@@ -36,7 +36,7 @@ namespace Ora.Common.Data
         /// Delete entity
         /// </summary>
         /// <param name="entity">Entity</param>
-        Task Delete(TEntity entity);
+        void Delete(TEntity entity);
 
         #endregion
 

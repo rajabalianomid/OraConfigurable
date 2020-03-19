@@ -81,13 +81,13 @@ namespace Ora.Services.Configurable.Repository
         /// Delete entity
         /// </summary>
         /// <param name="entity">Entity</param>
-        public virtual async Task Delete(TEntity entity)
+        public virtual void Delete(TEntity entity)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
 
             var filter = Builders<TEntity>.Filter.Eq("Id", entity.Id);
-            await Collection.DeleteOneAsync(filter);
+            Collection.DeleteOne(filter);
         }
 
         #endregion
