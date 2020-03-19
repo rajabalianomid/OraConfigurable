@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Ora.API.Models;
 using Ora.Common;
 using Ora.Common.RabbitMq;
 //using Ora.Common.RabbitMq;
@@ -32,7 +33,7 @@ namespace Ora.API
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "ToDo API",
+                    Title = "Microservice API",
                     Description = "A simple example for configurable by microservice and docker adn ASP.Net Core",
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
@@ -47,7 +48,8 @@ namespace Ora.API
                     }
                 });
             });
-
+            var endpointSection = Configuration.GetSection("EndPoints");
+            services.Configure<EndpointSetting>(endpointSection);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

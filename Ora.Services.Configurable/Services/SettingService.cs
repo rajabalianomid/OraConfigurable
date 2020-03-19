@@ -292,7 +292,7 @@ namespace Ora.Services.Configurable.Services
         public virtual IList<Setting> GetAllSettings(string applicationName, string name = null, bool cache = false)
         {
             applicationName = applicationName.Trim().ToLowerInvariant();
-            if (applicationName != null && (cache || !DbIsAvailable))
+            if (applicationName != null && (cache))
             {
                 IEnumerable<SettingForCaching> settingForCachings = null;
                 var all = GetAllSettingsCached(applicationName);
@@ -301,7 +301,7 @@ namespace Ora.Services.Configurable.Services
                 else if (all.Any() && all.ContainsKey(applicationName))
                     settingForCachings = all[applicationName];
 
-                return settingForCachings?.Select(s => new Setting
+                return settingForCachings == null ? new List<Setting>() : settingForCachings.Select(s => new Setting
                 {
                     ApplicationName = s.ApplicationName,
                     Id = s.Id,

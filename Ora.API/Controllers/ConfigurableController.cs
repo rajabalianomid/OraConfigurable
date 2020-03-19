@@ -14,14 +14,16 @@ namespace Ora.API.Controllers
     public class ConfigurableController : BaseController
     {
         IOptionsMonitor<EndpointSetting> _endpointSettings;
-        public ConfigurableController(IBusClient busClient) : base(busClient)
+        public ConfigurableController(IBusClient busClient, IOptionsMonitor<EndpointSetting> endpointSettings) : base(busClient)
         {
+            _endpointSettings = endpointSettings;
         }
         [HttpGet("")]
         public async Task<IActionResult> Get(string name)
         {
             var parameters = new Dictionary<string, string>();
-            parameters.Add(ApplicationName, name);
+            parameters.Add("Name", name);
+            parameters.Add("ApplicationName", ApplicationName);
             SetEndpoint(_endpointSettings.CurrentValue.Config);
             return Json(await MakeRequestAsync<List<ConfigModel>>(HTTPMethod.Get, route: EndpointMethod.Config, parameters));
         }

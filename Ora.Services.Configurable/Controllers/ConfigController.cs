@@ -30,7 +30,7 @@ namespace Ora.Services.Configurable.Controllers
             }
             catch (Exception)
             {
-                return Json(new BaseCommane());
+                return Json(new BaseCommand());
             }
 
         }
@@ -38,7 +38,7 @@ namespace Ora.Services.Configurable.Controllers
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]CreateSetting command)
         {
-            var result = new BaseCommane();
+            var result = new BaseCommand();
             try
             {
                 if (ModelState.IsValid)
@@ -46,7 +46,7 @@ namespace Ora.Services.Configurable.Controllers
                     var setting = _mapper.Map<CreateSetting, Setting>(command);
                     setting.IsActive = true;
                     await _settingService.InsertSetting(setting);
-                    result.Message = "Success";
+                    return Accepted();
                 }
             }
             catch (Exception) { }
@@ -56,13 +56,13 @@ namespace Ora.Services.Configurable.Controllers
         [HttpDelete("")]
         public async Task<IActionResult> Delete([FromBody]RemoveSetting command)
         {
-            var result = new BaseCommane();
+            var result = new BaseCommand();
             try
             {
                 var setting = _mapper.Map<RemoveSetting, Setting>(command);
                 setting.IsActive = false;
                 await _settingService.UpdateSetting(setting);
-                result.Message = "Success";
+                return Accepted();
             }
             catch (Exception) { }
             return Json(result);
@@ -71,7 +71,7 @@ namespace Ora.Services.Configurable.Controllers
         [HttpPut("")]
         public async Task<IActionResult> Put([FromBody]EditSetting command)
         {
-            var result = new BaseCommane();
+            var result = new BaseCommand();
             try
             {
                 if (ModelState.IsValid)
@@ -79,7 +79,7 @@ namespace Ora.Services.Configurable.Controllers
                     var setting = _mapper.Map<EditSetting, Setting>(command);
                     setting.IsActive = true;
                     await _settingService.UpdateSetting(setting);
-                    result.Message = "Success";
+                    return Accepted();
                 }
             }
             catch (Exception) { }

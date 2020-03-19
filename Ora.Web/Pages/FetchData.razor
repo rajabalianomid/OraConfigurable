@@ -9,6 +9,13 @@
 <p>This component demonstrates fetching data from a service.</p>
 
 <div>
+    @if (Show)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Do</strong> Success, Please check
+        </div>
+    }
+
     <EditForm Model="@_model" OnValidSubmit="HandleValidSubmit">
         <DataAnnotationsValidator />
         <ValidationSummary />
@@ -86,23 +93,25 @@
 </div>
 @code {
     private List<ConfigModel> configs;
+    private ConfigModel _model = new ConfigModel();
+    private FilterModel _filterModel = new FilterModel();
+    private bool Show;
 
     protected override async Task OnInitializedAsync()
     {
         configs = await ConfigService.GetAllAsync();
     }
 
-    private ConfigModel _model = new ConfigModel();
-    private FilterModel _filterModel = new FilterModel();
-
     private async Task HandleValidSubmit()
     {
+        Show = false;
         if (_model.Id > 0)
             await ConfigService.Edit(_model);
         else
             await ConfigService.Add(_model);
         configs = await ConfigService.GetAllAsync();
         Clear();
+        ShowAlert();
     }
 
     private async Task Filter()
@@ -113,9 +122,11 @@
 
     private async Task Disable(ConfigModel configModel)
     {
+        Show = false;
         await ConfigService.Disable(configModel);
         Clear();
         configs = await ConfigService.GetAllAsync();
+        ShowAlert();
     }
 
     private void Edit(ConfigModel configModel)
@@ -126,5 +137,9 @@
     private void Clear()
     {
         _model = new ConfigModel();
+    }
+    public void ShowAlert()
+    {
+        Show = true;
     }
 }

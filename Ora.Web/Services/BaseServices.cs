@@ -42,7 +42,7 @@ namespace Ora.Web.Services
                 string apiResponse = await response.Content.ReadAsStringAsync();
                 try
                 {
-                    if (apiResponse != "")
+                    if (apiResponse != "" && !apiResponse.ToLower().Contains("message"))
                         return JsonConvert.DeserializeObject<T>(apiResponse);
                     else if (response.StatusCode != System.Net.HttpStatusCode.Accepted)
                         throw new Exception();
