@@ -25,13 +25,10 @@ This project has 2 user interface
 * Ora.Common and Ora.Common.Commands: are a common project with classes that help you in each project.
 * The project is run by docker and docker-compose file.
 
-### Contribution guidelines ###
+### Extra ###
 
-* Writing tests
-* Code review
-* Other guidelines
+This project implemented by latest technologie and for learning the othe developer in simple way in Microservice, Docker, Blazor and ...
 
-### Who do I talk to? ###
+### Finally ###
 
-* Repo owner or admin
-* Other community or team contact
+* For more information please leave a message for me
