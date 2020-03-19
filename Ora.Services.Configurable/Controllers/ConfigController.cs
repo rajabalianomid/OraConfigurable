@@ -24,43 +24,66 @@ namespace Ora.Services.Configurable.Controllers
         [HttpGet("")]
         public IActionResult Get(CreateSetting model)
         {
-            return Json(_settingService.GetAllSettings(model.ApplicationName, name: model.Name, cache: true));
+            try
+            {
+                return Json(_settingService.GetAllSettings(model.ApplicationName, name: model.Name, cache: true));
+            }
+            catch (Exception)
+            {
+                return Json(new BaseCommane());
+            }
+
         }
 
         [HttpPost("")]
         public async Task<IActionResult> Post([FromBody]CreateSetting command)
         {
-            if (ModelState.IsValid)
+            var result = new BaseCommane();
+            try
             {
-                var setting = _mapper.Map<CreateSetting, Setting>(command);
-                setting.IsActive = true;
-                await _settingService.InsertSetting(setting);
-                return Accepted();
-
+                if (ModelState.IsValid)
+                {
+                    var setting = _mapper.Map<CreateSetting, Setting>(command);
+                    setting.IsActive = true;
+                    await _settingService.InsertSetting(setting);
+                    result.Message = "Success";
+                }
             }
-            return Content("Invalid parameter");
+            catch (Exception) { }
+            return Json(result);
         }
 
         [HttpDelete("")]
         public async Task<IActionResult> Delete([FromBody]RemoveSetting command)
         {
-            var setting = _mapper.Map<RemoveSetting, Setting>(command);
-            setting.IsActive = false;
-            await _settingService.UpdateSetting(setting);
-            return Accepted();
+            var result = new BaseCommane();
+            try
+            {
+                var setting = _mapper.Map<RemoveSetting, Setting>(command);
+                setting.IsActive = false;
+                await _settingService.UpdateSetting(setting);
+                result.Message = "Success";
+            }
+            catch (Exception) { }
+            return Json(result);
         }
 
         [HttpPut("")]
         public async Task<IActionResult> Put([FromBody]EditSetting command)
         {
-            if (ModelState.IsValid)
+            var result = new BaseCommane();
+            try
             {
-                var setting = _mapper.Map<EditSetting, Setting>(command);
-                setting.IsActive = true;
-                await _settingService.UpdateSetting(setting);
-                return Accepted();
+                if (ModelState.IsValid)
+                {
+                    var setting = _mapper.Map<EditSetting, Setting>(command);
+                    setting.IsActive = true;
+                    await _settingService.UpdateSetting(setting);
+                    result.Message = "Success";
+                }
             }
-            return Content("Invalid parameter");
+            catch (Exception) { }
+            return Json(result);
         }
     }
 }
