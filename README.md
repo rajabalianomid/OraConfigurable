@@ -11,7 +11,7 @@ Externalize Configurable Project
 * Rabbitmq
 * MongoDb
 * Microsoft DI IOC
-* Im-Memory Cache
+* In-Memory Cache
 
 ### Small Help ###
 
